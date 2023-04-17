@@ -43,6 +43,9 @@
     #endif
 #endif
 
+#include "mm.h"
+#include "mm2.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -167,40 +170,49 @@ static void guiTask(void *pvParameter) {
 
 static void create_demo_application(void)
 {
+    LV_IMG_DECLARE(mm);
+    LV_IMG_DECLARE(mm2);
+    lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL);
+    lv_img_set_src(img1, &mm);
+    lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, 0);
+
+    vTaskDelay(pdMS_TO_TICKS(100));
+    lv_obj_t * img2 = lv_img_create(lv_scr_act(), NULL);
+    lv_img_set_src(img2, &mm2);
+    lv_obj_align(img2, NULL, LV_ALIGN_CENTER, 0, 0);
+
+
     /* When using a monochrome display we only show "Hello World" centered on the
      * screen */
-#if defined CONFIG_LV_TFT_DISPLAY_MONOCHROME || \
-    defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S
+// #if defined CONFIG_LV_TFT_DISPLAY_MONOCHROME
+//     /* use a pretty small demo for monochrome displays */
+//     /* Get the current screen  */
+//     lv_obj_t * scr = lv_disp_get_scr_act(NULL);
 
-    /* use a pretty small demo for monochrome displays */
-    /* Get the current screen  */
-    lv_obj_t * scr = lv_disp_get_scr_act(NULL);
+//     /*Create a Label on the currently active screen*/
+//     lv_obj_t * label1 =  lv_label_create(scr, NULL);
 
-    /*Create a Label on the currently active screen*/
-    lv_obj_t * label1 =  lv_label_create(scr, NULL);
+//     /*Modify the Label's text*/
+//     lv_label_set_text(label1, "Hello\nworld");
 
-    /*Modify the Label's text*/
-    lv_label_set_text(label1, "Hello\nworld");
-
-    /* Align the Label to the center
-     * NULL means align on parent (which is the screen now)
-     * 0, 0 at the end means an x, y offset after alignment*/
-    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
-#else
-    /* Otherwise we show the selected demo */
-
-    #if defined CONFIG_LV_USE_DEMO_WIDGETS
-        lv_demo_widgets();
-    #elif defined CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER
-        lv_demo_keypad_encoder();
-    #elif defined CONFIG_LV_USE_DEMO_BENCHMARK
-        lv_demo_benchmark();
-    #elif defined CONFIG_LV_USE_DEMO_STRESS
-        lv_demo_stress();
-    #else
-        #error "No demo application selected."
-    #endif
-#endif
+//     /* Align the Label to the center
+//      * NULL means align on parent (which is the screen now)
+//      * 0, 0 at the end means an x, y offset after alignment*/
+//     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
+// #else
+//     /* Otherwise we show the selected demo */
+//     #if defined CONFIG_LV_USE_DEMO_WIDGETS
+//         lv_demo_widgets();
+//     #elif defined CONFIG_LV_USE_DEMO_KEYPAD_AND_ENCODER
+//         lv_demo_keypad_encoder();
+//     #elif defined CONFIG_LV_USE_DEMO_BENCHMARK
+//         lv_demo_benchmark();
+//     #elif defined CONFIG_LV_USE_DEMO_STRESS
+//         lv_demo_stress();
+//     #else
+//         #error "No demo application selected."
+//     #endif
+// #endif
 }
 
 static void lv_tick_task(void *arg) {
